@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Cairo, Open_Sans, Roboto_Mono } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({
@@ -7,9 +7,27 @@ const inter = Inter({
   subsets: ['latin', 'cyrillic'],
 })
 
+const cairo = Cairo({
+  variable: '--font-cairo',
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '600', '700'],
+})
+
+const openSans = Open_Sans({
+  variable: '--font-open-sans',
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '700'],
+})
+
+const robotoMono = Roboto_Mono({
+  variable: '--font-roboto-mono',
+  subsets: ['latin'],
+  weight: ['400'],
+})
+
 export const metadata: Metadata = {
-  title: 'Aiti Guru — Авторизация',
-  description: 'Авторизируйтесь для доступа к тестовому каталогу',
+  title: 'Aiti Guru — Каталог',
+  description: 'Каталог товаров Aiti Guru',
   manifest: '/manifest.json',
 }
 
@@ -24,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${cairo.variable} ${openSans.variable} ${robotoMono.variable} antialiased`}>
         {children}
       </body>
     </html>

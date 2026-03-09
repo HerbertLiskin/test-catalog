@@ -3,3 +3,7 @@ export { Input } from './Input/Input'
 export { Button } from './Button/Button'
 export { Checkbox } from './Checkbox/Checkbox'
 export { Divider } from './Divider/Divider'
+export { SearchInput } from './SearchInput/SearchInput'
+export { IconButton } from './IconButton/IconButton'
+export { Pagination } from './Pagination/Pagination'
+

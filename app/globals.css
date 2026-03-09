@@ -11,6 +11,19 @@
   --color-primary-border: #367aff;
   --color-input-border: #ededed;
   --color-divider: #ebebeb;
+  --color-gray2: #ececeb;
+  --color-gray3: #b2b3b9;
+  --color-text-black: #222222;
+  --color-text-gray: #999999;
+  --color-dark-blue: #3c538e;
+  --color-soft-green: #ebf3ea;
+  --color-table-border: #e2e2e2;
+  --color-pagination-active: #797fea;
+  --color-page-bg: #f6f6f6;
+  --color-danger: #f11010;
+  --color-pagination-muted: #969b9f;
+  --color-search-bg: #f3f3f3;
+  --color-black: #333333;
 }
 
 @theme inline {
@@ -24,7 +37,23 @@
   --color-primary-border: var(--color-primary-border);
   --color-input-border: var(--color-input-border);
   --color-divider: var(--color-divider);
+  --color-gray2: var(--color-gray2);
+  --color-gray3: var(--color-gray3);
+  --color-text-black: var(--color-text-black);
+  --color-text-gray: var(--color-text-gray);
+  --color-dark-blue: var(--color-dark-blue);
+  --color-soft-green: var(--color-soft-green);
+  --color-table-border: var(--color-table-border);
+  --color-pagination-active: var(--color-pagination-active);
+  --color-page-bg: var(--color-page-bg);
+  --color-danger: var(--color-danger);
+  --color-pagination-muted: var(--color-pagination-muted);
+  --color-search-bg: var(--color-search-bg);
+  --color-black: var(--color-black);
   --font-sans: var(--font-inter);
+  --font-cairo: var(--font-cairo);
+  --font-open-sans: var(--font-open-sans);
+  --font-roboto-mono: var(--font-roboto-mono);
 }
 
 body {
