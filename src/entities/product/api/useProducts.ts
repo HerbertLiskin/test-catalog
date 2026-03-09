@@ -8,15 +8,17 @@ export function useProducts(
   page: number,
   sortBy?: string,
   order?: 'asc' | 'desc',
+  q?: string,
 ) {
   return useQuery<ProductsResponse>({
-    queryKey: ['products', page, sortBy, order],
+    queryKey: ['products', page, sortBy, order, q],
     queryFn: ({ signal }) =>
       fetchProducts({
         limit: ITEMS_PER_PAGE,
         skip: (page - 1) * ITEMS_PER_PAGE,
         sortBy,
         order,
+        q,
         signal,
       }),
     placeholderData: (previousData) => previousData,

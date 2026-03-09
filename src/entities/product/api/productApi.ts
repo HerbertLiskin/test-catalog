@@ -6,6 +6,7 @@ interface FetchProductsParams {
   skip: number
   sortBy?: string
   order?: 'asc' | 'desc'
+  q?: string
   signal?: AbortSignal
 }
 
@@ -14,11 +15,18 @@ export const fetchProducts = ({
   skip,
   sortBy,
   order,
+  q,
   signal,
 }: FetchProductsParams): Promise<ProductsResponse> => {
-  let url = `/products?limit=${limit}&skip=${skip}&select=title,category,brand,sku,rating,price,thumbnail`
+  const endpoint = q ? '/products/search' : '/products'
+  let url = `${endpoint}?limit=${limit}&skip=${skip}&select=title,category,brand,sku,rating,price,thumbnail`
+  
+  if (q) {
+    url += `&q=${encodeURIComponent(q)}`
+  }
   if (sortBy) {
     url += `&sortBy=${sortBy}&order=${order || 'desc'}`
   }
+  
   return apiClient<ProductsResponse>(url, { signal })
 }

@@ -79,6 +79,7 @@ export function CatalogPage() {
   const currentPage = Number(searchParams.get('page')) || 1
   const sortBy = searchParams.get('sortBy') || undefined
   const sortOrder = (searchParams.get('order') as 'asc' | 'desc') || undefined
+  const q = searchParams.get('q') || undefined
 
   const tableRef = useRef<HTMLDivElement>(null)
 
@@ -114,7 +115,8 @@ export function CatalogPage() {
   const { data, isLoading, isError, refetch } = useProducts(
     currentPage,
     sortBy,
-    sortOrder
+    sortOrder,
+    q
   )
 
   // Scroll to top *after* new data is loaded
@@ -160,12 +162,30 @@ export function CatalogPage() {
           {/* Header — fixed */}
           <div className="shrink-0 px-[30px] pt-[30px]">
             <div className="flex w-full items-center justify-between">
-              <h2 className="font-cairo text-xl font-bold text-black">
-                Все позиции
-                <span className="font-cairo text-gray3 ml-2 text-base font-normal">
-                  ({total})
-                </span>
-              </h2>
+              <div className="flex items-center gap-6">
+                <h2 className="font-cairo text-xl font-bold text-black">
+                  Все позиции
+                  <span className="font-cairo text-gray3 ml-2 text-base font-normal">
+                    ({total})
+                  </span>
+                </h2>
+                {sortBy && (
+                  <button
+                    onClick={() => {
+                      const params = new URLSearchParams(searchParams.toString())
+                      params.delete('sortBy')
+                      params.delete('order')
+                      router.push(`${pathname}?${params.toString()}`, { scroll: false })
+                    }}
+                    className="flex cursor-pointer items-center gap-1.5 font-cairo text-sm text-gray3 transition-colors hover:text-black"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Сбросить сортировку
+                  </button>
+                )}
+              </div>
               <div className="flex items-start gap-2">
                 <IconButton 
                   icon="/icons/refresh.svg" 
@@ -238,6 +258,14 @@ export function CatalogPage() {
               <div className="flex items-center justify-center py-20">
                 <p className="font-cairo text-danger text-base">
                   Ошибка загрузки данных
+                </p>
+              </div>
+            )}
+
+            {!isLoading && !isError && products.length === 0 && (
+              <div className="flex items-center justify-center py-20">
+                <p className="font-cairo text-gray3 text-base">
+                  По вашему запросу ничего не найдено. 
                 </p>
               </div>
             )}
