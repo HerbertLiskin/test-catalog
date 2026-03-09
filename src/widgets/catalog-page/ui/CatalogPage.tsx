@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { SearchProducts } from '@/features/search-products'
 import { ProductRow, useProducts, ITEMS_PER_PAGE } from '@/entities/product'
@@ -71,34 +72,46 @@ const SortableHeader = ({
 }
 
 export function CatalogPage() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [sortBy, setSortBy] = useState<string | undefined>()
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | undefined>()
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const currentPage = Number(searchParams.get('page')) || 1
+  const sortBy = searchParams.get('sortBy') || undefined
+  const sortOrder = (searchParams.get('order') as 'asc' | 'desc') || undefined
 
   const tableRef = useRef<HTMLDivElement>(null)
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
+    const params = new URLSearchParams(searchParams.toString())
+    if (page > 1) {
+      params.set('page', page.toString())
+    } else {
+      params.delete('page')
+    }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   const handleSort = (field: string) => {
+    const params = new URLSearchParams(searchParams.toString())
     if (sortBy === field) {
       if (sortOrder === 'desc') {
-        setSortOrder('asc')
+        params.set('order', 'asc')
       } else {
-        setSortBy(undefined)
-        setSortOrder(undefined)
+        params.delete('sortBy')
+        params.delete('order')
       }
     } else {
-      setSortBy(field)
-      setSortOrder('desc')
+      params.set('sortBy', field)
+      params.set('order', 'desc')
     }
-    setCurrentPage(1)
+    params.delete('page') // Reset page to 1
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
 
-  const { data, isLoading, isError } = useProducts(
+  const { data, isLoading, isError, refetch } = useProducts(
     currentPage,
     sortBy,
     sortOrder
@@ -154,7 +167,11 @@ export function CatalogPage() {
                 </span>
               </h2>
               <div className="flex items-start gap-2">
-                <IconButton icon="/icons/refresh.svg" iconAlt="Обновить" />
+                <IconButton 
+                  icon="/icons/refresh.svg" 
+                  iconAlt="Обновить" 
+                  onClick={() => refetch()} 
+                />
                 <button className="bg-primary flex min-h-[42px] cursor-pointer items-center gap-[15px] overflow-hidden rounded-md px-5 py-2.5 transition-opacity hover:opacity-90">
                   <Image
                     src="/icons/plus-circle.svg"
