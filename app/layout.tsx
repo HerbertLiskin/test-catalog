@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Cairo, Open_Sans, Roboto_Mono } from 'next/font/google'
 import { QueryProvider } from '@/shared/providers/QueryProvider'
+import { AuthProvider } from '@/app/providers/AuthProvider'
 import { ProgressBar } from '@/shared/ui'
 import './globals.css'
 
@@ -48,8 +49,10 @@ export default function RootLayout({
         className={`${inter.variable} ${cairo.variable} ${openSans.variable} ${robotoMono.variable} antialiased`}
       >
         <QueryProvider>
-          <ProgressBar />
-          {children}
+          <AuthProvider>
+            <ProgressBar />
+            {children}
+          </AuthProvider>
         </QueryProvider>
       </body>
     </html>
