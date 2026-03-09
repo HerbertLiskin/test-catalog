@@ -110,6 +110,13 @@ export function CatalogPage() {
     router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
+  const handleRemoveSort = () => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.delete('sortBy')
+    params.delete('order')
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
 
   const { data, isLoading, isError, refetch } = useProducts(
@@ -171,26 +178,33 @@ export function CatalogPage() {
                 </h2>
                 {sortBy && (
                   <button
-                    onClick={() => {
-                      const params = new URLSearchParams(searchParams.toString())
-                      params.delete('sortBy')
-                      params.delete('order')
-                      router.push(`${pathname}?${params.toString()}`, { scroll: false })
-                    }}
-                    className="flex cursor-pointer items-center gap-1.5 font-cairo text-sm text-gray3 transition-colors hover:text-black"
+                    onClick={handleRemoveSort}
+                    className="font-cairo text-gray3 flex cursor-pointer items-center gap-1.5 text-sm transition-colors hover:text-black"
                   >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M18 6L6 18M6 6L18 18"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                     Сбросить сортировку
                   </button>
                 )}
               </div>
               <div className="flex items-start gap-2">
-                <IconButton 
-                  icon="/icons/refresh.svg" 
-                  iconAlt="Обновить" 
-                  onClick={() => refetch()} 
+                <IconButton
+                  icon="/icons/refresh.svg"
+                  iconAlt="Обновить"
+                  onClick={() => refetch()}
                 />
                 <button className="bg-primary flex min-h-[42px] cursor-pointer items-center gap-[15px] overflow-hidden rounded-md px-5 py-2.5 transition-opacity hover:opacity-90">
                   <Image
@@ -265,7 +279,7 @@ export function CatalogPage() {
             {!isLoading && !isError && products.length === 0 && (
               <div className="flex items-center justify-center py-20">
                 <p className="font-cairo text-gray3 text-base">
-                  По вашему запросу ничего не найдено. 
+                  По вашему запросу ничего не найдено.
                 </p>
               </div>
             )}
