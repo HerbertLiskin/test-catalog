@@ -1,4 +1,4 @@
-import { AuthPage } from '@/src/widgets/auth-page'
+import { AuthPage } from '@/widgets/auth-page'
 
 export default function Home() {
   return <AuthPage />
