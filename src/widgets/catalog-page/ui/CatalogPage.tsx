@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { SearchProducts } from '@/features/search-products'
+import { UserProfile } from '@/features/user-profile'
 import { ProductRow, useProducts, ITEMS_PER_PAGE } from '@/entities/product'
 import { Pagination, IconButton } from '@/shared/ui'
 
@@ -157,8 +158,9 @@ export function CatalogPage() {
           <h1 className="font-cairo text-heading text-2xl font-bold whitespace-nowrap">
             Товары
           </h1>
-          <div className="flex flex-1 items-center justify-center px-8">
+          <div className="flex flex-1 items-center justify-end gap-6 px-8">
             <SearchProducts />
+            <UserProfile />
           </div>
         </div>
       </div>
