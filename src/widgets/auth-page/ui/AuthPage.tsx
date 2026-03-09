@@ -1,5 +1,5 @@
-import { Logo } from '@/src/shared/ui'
-import { LoginForm } from '@/src/features/auth'
+import { Logo } from '@/shared/ui'
+import { LoginForm } from '@/features/auth'
 
 export function AuthPage() {
   return (

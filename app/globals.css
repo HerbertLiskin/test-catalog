@@ -1,16 +1,23 @@
 @import 'tailwindcss';
 
 :root {
-  --color-page: #f9f9f9;
+  --color-page: #f6f6f6;
   --color-card: #ffffff;
-  --color-heading: #232323;
-  --color-subtitle: #e0e0e0;
-  --color-muted: #9c9c9c;
+  --color-heading: #202020;
+  --color-subtitle: #f3f3f3;
+  --color-muted: #999999;
   --color-body: #6c6c6c;
   --color-primary: #242edb;
   --color-primary-border: #367aff;
   --color-input-border: #ededed;
   --color-divider: #ebebeb;
+  --color-black: #161919;
+  --color-text-black: #222222;
+  --color-gray-2: #ececeb;
+  --color-gray-3: #b2b3b9;
+  --color-soft-green: #ebf3ea;
+  --color-dark-blue: #515161;
+  --color-shadow-2: rgba(0, 0, 0, 0.12);
 }
 
 @theme inline {
@@ -24,7 +31,18 @@
   --color-primary-border: var(--color-primary-border);
   --color-input-border: var(--color-input-border);
   --color-divider: var(--color-divider);
-  --font-sans: var(--font-inter);
+  --color-black: var(--color-black);
+  --color-text-black: var(--color-text-black);
+  --color-gray-2: var(--color-gray-2);
+  --color-gray-3: var(--color-gray-3);
+  --color-soft-green: var(--color-soft-green);
+  --color-dark-blue: var(--color-dark-blue);
+  --shadow-2: 0px 20px 50px 0px var(--color-shadow-2);
+  --font-sans: 'Inter', 'Cairo', 'Open Sans', 'Roboto', sans-serif;
+  --font-cairo: 'Cairo', sans-serif;
+  --font-open-sans: 'Open Sans', sans-serif;
+  --font-roboto: 'Roboto', sans-serif;
+  --font-roboto-mono: 'Roboto Mono', monospace;
 }
 
 body {

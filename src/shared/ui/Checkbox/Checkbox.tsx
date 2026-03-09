@@ -1,42 +1,34 @@
 'use client'
 
+'use client'
+
+import { Icon } from '../Icon/Icon'
+
 interface CheckboxProps {
-  label: string
   checked: boolean
   onChange: (checked: boolean) => void
+  disabled?: boolean
+  className?: string
+  checkType?: 'Checked' | 'UnChecked' | 'UnCheckedDark' | 'Checked Dark'
 }
 
-export function Checkbox({ label, checked, onChange }: CheckboxProps) {
+export function Checkbox({ checked, onChange, disabled, className = '', checkType = 'UnChecked' }: CheckboxProps) {
+  const isChecked = checkType.startsWith('Checked') || checked
+
   return (
-    <label className="flex cursor-pointer items-center gap-2.5">
-      <span
-        className={`flex size-[18px] items-center justify-center rounded border-[1.5px] transition-colors ${
-          checked
-            ? 'border-primary bg-primary'
-            : 'border-muted bg-transparent'
-        }`}
-      >
-        {checked && (
-          <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-            <path
-              d="M1 5L4.5 8.5L11 1.5"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        )}
-      </span>
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-        className="sr-only"
-      />
-      <span className="text-base font-medium leading-[1.5] text-muted">
-        {label}
-      </span>
-    </label>
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={() => onChange(!isChecked)}
+      className={`rounded-[4px] size-[22px] flex items-center justify-center transition-all ${
+        isChecked 
+          ? 'bg-primary border-none p-[10px]' 
+          : 'bg-white border border-gray-3 border-solid'
+      } ${className}`}
+    >
+      {isChecked && (
+        <Icon name="plus" size={10.8} color="white" className="rotate-45" />
+      )}
+    </button>
   )
 }

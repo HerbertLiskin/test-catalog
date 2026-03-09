@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Input, Button, Checkbox, Divider } from '@/src/shared/ui'
+import { Input, Button, Checkbox, Divider } from '@/shared/ui'
 
 export function LoginForm() {
   const [login, setLogin] = useState('')

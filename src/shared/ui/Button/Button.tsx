@@ -1,25 +1,38 @@
 import { type ButtonHTMLAttributes, type ReactNode } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  children: ReactNode
+  children?: ReactNode
+  variant?: 'primary' | 'ghost' | 'icon'
+  size?: 'md' | 'sm' | 'xs'
 }
 
-export function Button({ children, ...rest }: ButtonProps) {
+export function Button({ children, variant = 'primary', size = 'md', className = '', ...rest }: ButtonProps) {
+  const baseStyles = 'relative cursor-pointer overflow-hidden leading-[1.2] font-semibold transition-all flex items-center justify-center gap-[15px]'
+  
+  const variants = {
+    primary: 'rounded-[6px] bg-primary text-[#ebf3ea] px-[20px] py-[10px] text-[14px] border-none font-cairo',
+    ghost: 'rounded-[8px] bg-white border border-gray-2 p-[10px]',
+    icon: 'bg-primary rounded-full text-white p-0 size-[32px]'
+  }
+
+  const sizes = {
+    md: 'min-h-[42px]',
+    sm: '',
+    xs: ''
+  }
+
   return (
     <button
       {...rest}
-      className="relative w-full cursor-pointer overflow-hidden rounded-xl border border-primary-border px-2 py-4 text-lg font-semibold leading-[1.2] tracking-[-0.18px] text-white"
-      style={{
-        backgroundImage:
-          'linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 100%), linear-gradient(90deg, #242edb 0%, #242edb 100%)',
-        boxShadow: '0 8px 8px 0 rgba(54,122,255,0.03)',
-      }}
+      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
     >
       {children}
-      <span
-        className="pointer-events-none absolute inset-0 rounded-[inherit]"
-        style={{ boxShadow: 'inset 0 -2px 0 1px rgba(0,0,0,0.08)' }}
-      />
+      {variant === 'primary' && (
+        <span
+          className="pointer-events-none absolute inset-0 rounded-[inherit]"
+          style={{ backgroundImage: 'linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.12) 100%)' }}
+        />
+      )}
     </button>
   )
 }
