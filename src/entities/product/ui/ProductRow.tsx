@@ -19,18 +19,16 @@ export function ProductRow({
   onToggleSelect,
 }: ProductRowProps) {
   const { whole, decimal } = formatPrice(product.price)
-  const isLowRating = product.rating < 4.0
+  const isLowRating = product.rating < 3.0
 
   return (
-    <div className="border-y border-table-border">
+    <div className="border-table-border border-y">
       <div className="relative flex h-[71px] items-center overflow-hidden">
         {/* Selected row stripe */}
-        {selected && (
-          <div className="h-[69px] w-[3px] shrink-0 bg-dark-blue" />
-        )}
+        {selected && <div className="bg-dark-blue h-[69px] w-[3px] shrink-0" />}
 
         <div
-          className={`flex w-full items-center gap-0 ${selected ? 'pl-[15px] pr-[18px]' : 'px-[18px]'}`}
+          className={`flex w-full items-center gap-0 ${selected ? 'pr-[18px] pl-[15px]' : 'px-[18px]'}`}
         >
           {/* Left: Checkbox + Photo + Name */}
           <div className="flex w-[278px] shrink-0 items-center gap-[18px]">
@@ -38,14 +36,12 @@ export function ProductRow({
             <button
               onClick={() => onToggleSelect?.(product.id)}
               className={`size-[22px] shrink-0 cursor-pointer rounded border transition-colors ${
-                selected
-                  ? 'border-gray3 bg-dark-blue'
-                  : 'border-gray3 bg-white'
+                selected ? 'border-gray3 bg-dark-blue' : 'border-gray3 bg-white'
               }`}
             />
 
             {/* Photo */}
-            <div className="relative size-[48px] shrink-0 overflow-hidden rounded-lg border border-gray2 bg-[#f5f5f5]">
+            <div className="border-gray2 relative size-[48px] shrink-0 overflow-hidden rounded-lg border bg-[#f5f5f5]">
               {product.thumbnail ? (
                 <Image
                   src={product.thumbnail}
@@ -61,10 +57,10 @@ export function ProductRow({
 
             {/* Name + Category */}
             <div className="flex w-[210px] flex-col gap-[10px]">
-              <p className="truncate font-cairo text-base font-bold text-text-black">
+              <p className="font-cairo text-text-black truncate text-base font-bold">
                 {product.title}
               </p>
-              <p className="font-cairo text-sm text-gray3">
+              <p className="font-cairo text-gray3 text-sm">
                 {product.category}
               </p>
             </div>
@@ -73,17 +69,17 @@ export function ProductRow({
           {/* Right: Details */}
           <div className="flex flex-1 items-center justify-evenly">
             {/* Vendor (brand) */}
-            <p className="w-[125px] shrink-0 text-center font-open-sans text-base font-bold text-black">
+            <p className="font-open-sans w-[125px] shrink-0 text-center text-base font-bold text-black">
               {product.brand || '—'}
             </p>
 
             {/* Article (sku) */}
-            <p className="w-[140px] shrink-0 text-center font-open-sans text-base text-black">
+            <p className="font-open-sans w-[140px] shrink-0 text-center text-base text-black">
               {product.sku}
             </p>
 
             {/* Rating */}
-            <p className="w-[100px] shrink-0 text-center font-open-sans text-base text-black">
+            <p className="font-open-sans w-[100px] shrink-0 text-center text-base text-black">
               <span className={isLowRating ? 'text-danger' : ''}>
                 {product.rating}
               </span>
@@ -91,7 +87,7 @@ export function ProductRow({
             </p>
 
             {/* Price */}
-            <p className="w-[140px] shrink-0 text-center font-roboto-mono text-base text-text-black">
+            <p className="font-roboto-mono text-text-black w-[140px] shrink-0 text-center text-base">
               <span>{whole}</span>
               <span className="text-text-gray">{decimal}</span>
             </p>
@@ -99,7 +95,7 @@ export function ProductRow({
             {/* Actions */}
             <div className="flex shrink-0 items-center justify-center gap-4">
               {/* Add button */}
-              <button className="flex h-[27px] w-[52px] cursor-pointer items-center justify-center rounded-full bg-primary p-1 transition-opacity hover:opacity-90">
+              <button className="bg-primary flex h-[27px] w-[52px] cursor-pointer items-center justify-center rounded-full p-1 transition-opacity hover:opacity-90">
                 <Image
                   src="/icons/plus.svg"
                   alt="Добавить"

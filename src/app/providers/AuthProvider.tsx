@@ -2,7 +2,8 @@
 
 import { useEffect, useState, type ReactNode } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
-import { getSessionToken } from '@/entities/session'
+import { getSessionToken, clearSession } from '@/entities/session'
+import { eventBus, EVENT_UNAUTHORIZED } from '@/shared/lib/utils/eventBus'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -20,6 +21,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     })
     return () => { mounted = false }
   }, [])
+
+  useEffect(() => {
+    const unsubscribe = eventBus.on(EVENT_UNAUTHORIZED, () => {
+      clearSession()
+      router.replace('/')
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [router])
 
   useEffect(() => {
     if (!isMounted) return

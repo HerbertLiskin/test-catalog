@@ -1,4 +1,5 @@
 import { getSessionToken, clearSession } from '@/entities/session'
+import { eventBus, EVENT_UNAUTHORIZED } from '../lib/utils/eventBus'
 
 const BASE_URL = 'https://dummyjson.com'
 
@@ -40,7 +41,7 @@ export async function apiClient<T>(
     // Auto logout if unauthorized
     if (res.status === 401 && typeof window !== 'undefined') {
       clearSession()
-      window.location.href = '/'
+      eventBus.emit(EVENT_UNAUTHORIZED)
     }
 
     throw new ApiError(res.status, `Ошибка ${res.status}: ${res.statusText}`, errorData)
