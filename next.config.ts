@@ -15,6 +15,14 @@ const withPWA = withPWAInit({
 import ESLintPlugin from "eslint-webpack-plugin";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.dummyjson.com",
+      },
+    ],
+  },
   webpack: (config, { dev }) => {
     if (dev) {
       config.plugins.push(

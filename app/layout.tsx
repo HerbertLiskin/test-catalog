@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Cairo, Open_Sans, Roboto_Mono } from 'next/font/google'
+import { QueryProvider } from '@/shared/providers/QueryProvider'
+import { ProgressBar } from '@/shared/ui'
 import './globals.css'
 
 const inter = Inter({
@@ -42,8 +44,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${inter.variable} ${cairo.variable} ${openSans.variable} ${robotoMono.variable} antialiased`}>
-        {children}
+      <body
+        className={`${inter.variable} ${cairo.variable} ${openSans.variable} ${robotoMono.variable} antialiased`}
+      >
+        <QueryProvider>
+          <ProgressBar />
+          {children}
+        </QueryProvider>
       </body>
     </html>
   )

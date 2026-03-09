@@ -6,4 +6,5 @@ export { Divider } from './Divider/Divider'
 export { SearchInput } from './SearchInput/SearchInput'
 export { IconButton } from './IconButton/IconButton'
 export { Pagination } from './Pagination/Pagination'
+export { ProgressBar } from './ProgressBar/ProgressBar'
 

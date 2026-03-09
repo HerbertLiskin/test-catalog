@@ -1,19 +1,10 @@
 import Image from 'next/image'
-
-export interface Product {
-  id: string
-  name: string
-  category: string
-  vendor: string
-  article: string
-  rating: number
-  price: number
-  selected?: boolean
-}
+import type { Product } from '../model/types'
 
 interface ProductRowProps {
   product: Product
-  onToggleSelect?: (id: string) => void
+  selected?: boolean
+  onToggleSelect?: (id: number) => void
 }
 
 function formatPrice(price: number): { whole: string; decimal: string } {
@@ -22,38 +13,56 @@ function formatPrice(price: number): { whole: string; decimal: string } {
   return { whole, decimal: `,${parts[1]}` }
 }
 
-export function ProductRow({ product, onToggleSelect }: ProductRowProps) {
+export function ProductRow({
+  product,
+  selected,
+  onToggleSelect,
+}: ProductRowProps) {
   const { whole, decimal } = formatPrice(product.price)
   const isLowRating = product.rating < 4.0
 
   return (
     <div className="border-y border-table-border">
-      <div className="flex items-center h-[71px] overflow-hidden relative">
+      <div className="relative flex h-[71px] items-center overflow-hidden">
         {/* Selected row stripe */}
-        {product.selected && (
-          <div className="w-[3px] h-[69px] bg-dark-blue shrink-0" />
+        {selected && (
+          <div className="h-[69px] w-[3px] shrink-0 bg-dark-blue" />
         )}
 
-        <div className={`flex items-center w-full gap-0 ${product.selected ? 'pl-[15px] pr-[18px]' : 'px-[18px]'}`}>
+        <div
+          className={`flex w-full items-center gap-0 ${selected ? 'pl-[15px] pr-[18px]' : 'px-[18px]'}`}
+        >
           {/* Left: Checkbox + Photo + Name */}
-          <div className="flex items-center gap-[18px] w-[278px] shrink-0">
+          <div className="flex w-[278px] shrink-0 items-center gap-[18px]">
             {/* Checkbox */}
             <button
               onClick={() => onToggleSelect?.(product.id)}
-              className={`size-[22px] rounded border shrink-0 cursor-pointer transition-colors ${
-                product.selected
-                  ? 'bg-dark-blue border-gray3'
-                  : 'bg-white border-gray3'
+              className={`size-[22px] shrink-0 cursor-pointer rounded border transition-colors ${
+                selected
+                  ? 'border-gray3 bg-dark-blue'
+                  : 'border-gray3 bg-white'
               }`}
             />
 
-            {/* Photo placeholder */}
-            <div className="size-[48px] rounded-lg bg-[#c4c4c4] border border-gray2 shrink-0" />
+            {/* Photo */}
+            <div className="relative size-[48px] shrink-0 overflow-hidden rounded-lg border border-gray2 bg-[#f5f5f5]">
+              {product.thumbnail ? (
+                <Image
+                  src={product.thumbnail}
+                  alt={product.title}
+                  fill
+                  className="object-cover"
+                  sizes="48px"
+                />
+              ) : (
+                <div className="size-full bg-[#c4c4c4]" />
+              )}
+            </div>
 
             {/* Name + Category */}
-            <div className="flex flex-col gap-[10px] w-[210px]">
-              <p className="font-cairo font-bold text-base text-text-black truncate">
-                {product.name}
+            <div className="flex w-[210px] flex-col gap-[10px]">
+              <p className="truncate font-cairo text-base font-bold text-text-black">
+                {product.title}
               </p>
               <p className="font-cairo text-sm text-gray3">
                 {product.category}
@@ -62,39 +71,51 @@ export function ProductRow({ product, onToggleSelect }: ProductRowProps) {
           </div>
 
           {/* Right: Details */}
-          <div className="flex-1 flex items-center justify-evenly">
-            {/* Vendor */}
-            <p className="font-open-sans font-bold text-base text-black text-center w-[125px] shrink-0">
-              {product.vendor}
+          <div className="flex flex-1 items-center justify-evenly">
+            {/* Vendor (brand) */}
+            <p className="w-[125px] shrink-0 text-center font-open-sans text-base font-bold text-black">
+              {product.brand || '—'}
             </p>
 
-            {/* Article */}
-            <p className="font-open-sans text-base text-black text-center w-[140px] shrink-0">
-              {product.article}
+            {/* Article (sku) */}
+            <p className="w-[140px] shrink-0 text-center font-open-sans text-base text-black">
+              {product.sku}
             </p>
 
             {/* Rating */}
-            <p className="font-open-sans text-base text-black text-center w-[100px] shrink-0">
-              <span className={isLowRating ? 'text-danger' : ''}>{product.rating}</span>
+            <p className="w-[100px] shrink-0 text-center font-open-sans text-base text-black">
+              <span className={isLowRating ? 'text-danger' : ''}>
+                {product.rating}
+              </span>
               /5
             </p>
 
             {/* Price */}
-            <p className="font-roboto-mono text-base text-text-black text-center w-[140px] shrink-0">
+            <p className="w-[140px] shrink-0 text-center font-roboto-mono text-base text-text-black">
               <span>{whole}</span>
               <span className="text-text-gray">{decimal}</span>
             </p>
 
             {/* Actions */}
-            <div className="flex items-center gap-4 justify-center shrink-0">
+            <div className="flex shrink-0 items-center justify-center gap-4">
               {/* Add button */}
-              <button className="flex items-center justify-center w-[52px] h-[27px] bg-primary rounded-full p-1 cursor-pointer hover:opacity-90 transition-opacity">
-                <Image src="/icons/plus.svg" alt="Добавить" width={14} height={14} />
+              <button className="flex h-[27px] w-[52px] cursor-pointer items-center justify-center rounded-full bg-primary p-1 transition-opacity hover:opacity-90">
+                <Image
+                  src="/icons/plus.svg"
+                  alt="Добавить"
+                  width={14}
+                  height={14}
+                />
               </button>
 
               {/* More button */}
-              <button className="cursor-pointer hover:opacity-70 transition-opacity">
-                <Image src="/icons/dots-circle.svg" alt="Ещё" width={32} height={32} />
+              <button className="cursor-pointer transition-opacity hover:opacity-70">
+                <Image
+                  src="/icons/dots-circle.svg"
+                  alt="Ещё"
+                  width={32}
+                  height={32}
+                />
               </button>
             </div>
           </div>
