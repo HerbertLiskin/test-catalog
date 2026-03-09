@@ -150,8 +150,23 @@ export function CatalogPage() {
     })
   }
 
+  const targetIds = products.map((p) => p.id)
+  const isAllSelected = targetIds.length > 0 && targetIds.every((id) => selectedIds.has(id))
+
+  const handleToggleSelectAll = () => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      if (isAllSelected) {
+        targetIds.forEach((id) => next.delete(id))
+      } else {
+        targetIds.forEach((id) => next.add(id))
+      }
+      return next
+    })
+  }
+
   return (
-    <div className="bg-page-bg flex h-screen flex-col pr-[30px]">
+    <div className="bg-page-bg flex h-screen flex-col px-[30px]">
       {/* Navigation Bar — fixed height */}
       <div className="shrink-0 py-5 pb-0">
         <div className="flex h-[105px] items-center justify-between rounded-[10px] bg-white px-[30px]">
@@ -232,7 +247,15 @@ export function CatalogPage() {
             <div className="sticky top-0 z-10 bg-white">
               <div className="flex h-[73px] items-center px-[18px]">
                 <div className="flex w-[278px] shrink-0 items-center gap-5">
-                  <div className="border-gray3 size-[22px] shrink-0 rounded border" />
+                  <button
+                    onClick={handleToggleSelectAll}
+                    disabled={products.length === 0}
+                    className={`size-[22px] shrink-0 cursor-pointer rounded border transition-colors ${
+                      isAllSelected
+                        ? 'border-gray3 bg-dark-blue'
+                        : 'border-gray3 bg-white'
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  />
                   <p className="font-cairo text-gray3 text-base font-bold">
                     Наименование
                   </p>
