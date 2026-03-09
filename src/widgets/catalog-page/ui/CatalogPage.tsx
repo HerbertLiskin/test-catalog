@@ -73,6 +73,8 @@ const SortableHeader = ({
   )
 }
 
+const CATALOG_PARAMS_KEY = 'catalog_last_params'
+
 export function CatalogPage() {
   const router = useRouter()
   const pathname = usePathname()
@@ -84,6 +86,24 @@ export function CatalogPage() {
   const q = searchParams.get('q') || undefined
 
   const tableRef = useRef<HTMLDivElement>(null)
+
+  // Restore last params from storage if user arrives without any GET params
+  useEffect(() => {
+    if (searchParams.toString() === '') {
+      const saved = localStorage.getItem(CATALOG_PARAMS_KEY)
+      if (saved) {
+        router.replace(`${pathname}?${saved}`, { scroll: false })
+      }
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Persist current query params to storage whenever they change
+  useEffect(() => {
+    const qs = searchParams.toString()
+    if (qs) {
+      localStorage.setItem(CATALOG_PARAMS_KEY, qs)
+    }
+  }, [searchParams])
 
   const handlePageChange = (page: number) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -116,6 +136,8 @@ export function CatalogPage() {
     const params = new URLSearchParams(searchParams.toString())
     params.delete('sortBy')
     params.delete('order')
+    params.delete('page')
+
     router.push(`${pathname}?${params.toString()}`, { scroll: false })
   }
 
@@ -153,7 +175,8 @@ export function CatalogPage() {
   }
 
   const targetIds = products.map((p) => p.id)
-  const isAllSelected = targetIds.length > 0 && targetIds.every((id) => selectedIds.has(id))
+  const isAllSelected =
+    targetIds.length > 0 && targetIds.every((id) => selectedIds.has(id))
 
   const handleToggleSelectAll = () => {
     setSelectedIds((prev) => {
@@ -259,7 +282,7 @@ export function CatalogPage() {
                       isAllSelected
                         ? 'border-gray3 bg-dark-blue'
                         : 'border-gray3 bg-white'
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    } disabled:cursor-not-allowed disabled:opacity-50`}
                   />
                   <p className="font-cairo text-gray3 text-base font-bold">
                     Наименование
