@@ -5,6 +5,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { SearchProducts } from '@/features/search-products'
 import { UserProfile } from '@/features/user-profile'
+import { AddProductModal } from '@/features/add-product'
 import { ProductRow, useProducts, ITEMS_PER_PAGE } from '@/entities/product'
 import { Pagination, IconButton } from '@/shared/ui'
 
@@ -119,6 +120,7 @@ export function CatalogPage() {
   }
 
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set())
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
   const { data, isLoading, isError, refetch } = useProducts(
     currentPage,
@@ -223,7 +225,10 @@ export function CatalogPage() {
                   iconAlt="Обновить"
                   onClick={() => refetch()}
                 />
-                <button className="bg-primary flex min-h-[42px] cursor-pointer items-center gap-[15px] overflow-hidden rounded-md px-5 py-2.5 transition-opacity hover:opacity-90">
+                <button
+                  onClick={() => setIsAddModalOpen(true)}
+                  className="bg-primary flex min-h-[42px] cursor-pointer items-center gap-[15px] overflow-hidden rounded-md px-5 py-2.5 transition-opacity hover:opacity-90"
+                >
                   <Image
                     src="/icons/plus-circle.svg"
                     alt=""
@@ -335,6 +340,11 @@ export function CatalogPage() {
           )}
         </div>
       </div>
+
+      <AddProductModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+      />
     </div>
   )
 }
