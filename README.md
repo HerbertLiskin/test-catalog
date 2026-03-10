@@ -1,6 +1,7 @@
 # test-catalog
 
 **login - emilys**
+
 **pass - emilyspass**
 
 [Описание проекта и использованные промпты](PROMPTS_AND_EXPLAIN.md)
